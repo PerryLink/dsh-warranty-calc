@@ -1,0 +1,215 @@
+# 质保期与索赔金额核对 规则库
+#
+# 规则数据与代码分离：替换本文件即可切换规则集版本，无需改动 TypeScript。
+#
+# 条款引用纪律（由 shared/ruleset.ts 强制校验）：
+#   - 每条规则必须写全 document / number / clause / excerpt / kind / source，
+#     且 excerpt 必须是逐字摘录，不得改写。
+#   - kind: direct                       条款直接规定了所检查的要求
+#   - kind: derived-from-principle       条款未直接规定，仅能由原则性条款推论（severity 最多 warn）
+#   - kind: institutional-configuration 阈值出自本机构配置（severity 最多 info）
+#
+# ⚠️⚠️ 本规则库最要紧的说明：**质保政策是厂商政策，不是国家标准，而且本规则库不假装引用了某个政策。**
+#   本插件核对的是"质保索赔台账"的**算术与期限自洽**：
+#     索赔单号与配件名称是否填写、销售日期与索赔日期是否可解析、
+#     索赔是否落在**台账写明的**质保期内、索赔时里程是否可解析、
+#     索赔金额是否等于数量乘单价、处理结论是否记录、
+#     索赔单号是否重复、是否残留模板占位符。
+#   质保期长度、里程上限、工时费率与免赔额**由各厂商的质保政策与三包规定约定**：
+#   汽车三包（《家用汽车产品修理更换退货责任规定》）、工程机械、家电等行业的政策各不相同，
+#   **不存在统一标准**。因此每条规则的 basis 都如实写明这一点，kind 一律 derived-from-principle（封顶 warn）。
+#
+# ⚠️⚠️ 另一条**必须保留**的边界：**本插件绝不判定索赔是否应当受理、
+#   故障是否属于质保范围、是否属于人为损坏或正常磨损**。
+#   那需要技术人员鉴定并对照厂商质保政策，是索赔审核的判断。
+#   → **质保期月数（warrantyMonths）与里程上限（warrantyMiles）一律取自台账**，
+#     本插件**不内置任何厂商的质保期**。
+#   → ⚠️ 期限核对按**天**近似：政策写的是月，而月有长短，
+#     故本插件用"销售日后 N 天"近似 N 个月（每月按 30.44 天计），
+#     并**在规则的 note 与 README 里明说这是近似**。精确到日的判断请以政策原文为准。
+
+plugin: dsh-warranty-calc
+version: "2026.1"
+
+rules:
+  - id: WC-001
+    title: 索赔台账应填写索赔单号与配件名称
+    severity: warn
+    basis:
+      document: 《家用汽车产品修理更换退货责任规定》
+      number: 市场监管总局令第43号（2021 年 7 月 22 日公布，自 2022 年 1 月 1 日起施行）
+      clause: 第十七条（修理记录应当包括……更换的零部件名称和编号……）、第九条（三包凭证的内容）
+      excerpt: 修理者应当建立修理记录存档制度。修理记录保存期限不得低于6年。修理记录应当包括送修时间、行驶里程、消费者质量问题陈述、检查结果、修理项目、更换的零部件名称和编号、材料费、工时及工时费、车辆拖运费用、提供备用车或者交通费用补偿的情况、交车时间、修理者和消费者签名或者盖章等信息，并提供给消费者一份。
+      kind: direct
+      source: https://www.gov.cn/gongbao/content/2021/content_5639836.htmgongbao/content/2021/content_5639836.htm
+    params:
+        check:
+          kind: presenceAny
+          fields: ["claimNo","partName"]
+          fix: 补填索赔单号与配件名称；本条只核对是否填写，不判断索赔是否应当受理
+    note: >-
+      ✅ **本条 excerpt 已于 2026-10-07 换为逐字引文**（见 rules/evidence/clause-verification-warranty-regulation.md）。
+      ✅ kind 已升为 direct（2026-10-07）：第十七条逐字规定修理记录「应当包括……**更换的零部件名称和编号**、材料费、工时及工时费……」——"索赔单号与配件名称"正是该条要求的信息在索赔台账上的落点。
+      索赔单号与配件名称是索赔台账的**最低可追溯信息**：
+      缺其一，这笔索赔就无法与具体的车、具体的配件对应。
+      本次未取得明文条号，故封顶 warn。
+      本条只核对"至少填了一个"，**不判断该索赔是否属于质保范围**。
+
+  - id: WC-002
+    title: 索赔日期应在台账写明的质保期内
+    severity: info
+    basis:
+      document: 各厂商质保政策与三包规定（本机构配置）
+      number: 无统一标准（本条依据为台账写明的质保期）
+      clause: 第十八条（三包有效期与包修期均为"不得低于"的下限）、第四条（鼓励经营者作出严于本规定的承诺）
+      excerpt: 本条依据为本机构配置的口径，不存在可引用的标准条文；本规则库不伪造引文。
+      kind: institutional-configuration
+      source: https://www.gov.cn/gongbao/content/2021/content_5639836.htmgongbao/content/2021/content_5639836.htm
+    params:
+        check:
+          kind: date
+          field: claimDate
+          notBeforeField: saleDate
+          notAfterField: warrantyEndAt
+    note: >-
+      本条只在台账**已经写出质保期截止日**（warrantyEnd）时，核对索赔日期是否落在其中。
+      依据说明：**质保期长度由各厂商质保政策与三包规定约定**，本插件**不内置任何厂商的质保期**。
+      ⚠️ **本插件不用"销售日 + N 个月"自动推算截止日**。三条理由（均据《家用汽车产品修理更换退货
+      责任规定》**第十八条**逐字核对，见 rules/evidence/clause-verification-warranty-regulation.md）：
+      ① **起算点有两个** —— 「三包有效期和包修期**自销售者开具购车发票之日起计算**；
+      开具购车发票日期与交付家用汽车产品日期**不一致的，自交付之日起计算**」，
+      故**"销售日"未必是起算点**；
+      ② **度量有两套** —— 时间与行驶里程「**以先到者为准**」，只看日期会漏掉里程先到；
+      ③ **期限有两个** —— **三包有效期（不得低于 2 年或 5 万公里）** 与
+      **包修期（不得低于 3 年或 6 万公里）不是同一个期限**，算一个日期不够。
+      ⚠️ **注意：本规定没有"上牌日"这一起算点**（只有**发票日**与**交付日**），
+      不要把上牌日当作法定起算点。
+      截止日应由使用方按政策算出后写入台账的 质保期截止日栏。
+      warrantyEnd 为空时本条进 skipped，**不会假定任何期限**。
+      本条命中只表示"与你写在台账里的期限不一致"，**不表示索赔已超保**。
+
+  - id: WC-003
+    title: 索赔时里程应可解析
+    severity: warn
+    basis:
+      document: 《家用汽车产品修理更换退货责任规定》
+      number: 市场监管总局令第43号（2021 年 7 月 22 日公布，自 2022 年 1 月 1 日起施行）
+      clause: 第十八条（三包有效期、包修期与其起算点）
+      excerpt: 家用汽车产品的三包有效期不得低于2年或者行驶里程50,000公里，以先到者为准；包修期不得低于3年或者行驶里程60,000公里，以先到者为准。三包有效期和包修期自销售者开具购车发票之日起计算；开具购车发票日期与交付家用汽车产品日期不一致的，自交付之日起计算。
+      kind: derived-from-principle
+      source: https://www.gov.cn/gongbao/content/2021/content_5639836.htmgongbao/content/2021/content_5639836.htm
+    params:
+        check:
+          kind: number
+          field: mileageAtClaim
+          fix: 索赔时里程应填写数字（可带单位）；本条只核对可解析性，不判断是否超出质保里程
+    note: >-
+      ✅ **本条 excerpt 已于 2026-10-07 换为逐字引文**（见 rules/evidence/clause-verification-warranty-regulation.md）。
+      ⚠️ kind 仍为 derived-from-principle：第十八条规定的是**三包有效期与包修期的下限及起算点**，并未要求索赔台账填写行驶里程；里程可解析是核对的前提。
+      里程是质保期限的**两个维度之一**（时间与里程，以先到者为准）：
+      里程不可解析，就无法判断索赔是否在质保范围内。
+      本次未取得明文条号，故封顶 warn。
+      本条**只核对能否解析为数值**（接受 `48600`、`48,600 公里` 这类写法），
+      **不判断是否超过质保里程** —— 里程上限由厂商政策约定，见 WC-004。
+
+  - id: WC-004
+    title: 索赔时里程不应超过台账写明的质保里程
+    severity: info
+    basis:
+      document: 各厂商质保政策（本机构配置）
+      number: 无统一标准（本条依据为台账写明的里程上限）
+      clause: 第十八条（行驶里程 50,000 公里／60,000 公里，以先到者为准）
+      excerpt: 本条依据为本机构配置的口径，不存在可引用的标准条文；本规则库不伪造引文。
+      kind: institutional-configuration
+      source: https://www.gov.cn/gongbao/content/2021/content_5639836.htmgongbao/content/2021/content_5639836.htm
+    params:
+        check:
+          kind: fieldComparison
+          leftField: mileageAtClaim
+          rightField: warrantyMiles
+          relation: lte
+          fix: 核对适用政策的里程上限；本条只做数值比较
+    note: >-
+      本条只在台账**已经写出质保里程上限**（warrantyMiles）时，核对索赔时里程是否超过它。
+      依据说明：**里程上限由各厂商质保政策约定**，本插件**不内置任何里程数**。
+      本条命中只表示"超过你写在台账里的上限"，**不表示索赔已超保** ——
+      因为时间与里程是**两个独立维度，以先到者为准**，且各政策对"超保后是否仍受理"另有规定。
+      本条只做数值比较，**不判断该索赔是否应当受理**。
+
+  - id: WC-005
+    title: 索赔金额应等于数量乘单价
+    severity: warn
+    basis:
+      document: 《家用汽车产品修理更换退货责任规定》
+      number: 市场监管总局令第43号（2021 年 7 月 22 日公布，自 2022 年 1 月 1 日起施行）
+      clause: 第十九条（免费修理，包括免除工时费和材料费）
+      excerpt: 家用汽车产品在包修期内出现质量问题或者易损耗零部件在其质量保证期内出现质量问题的，消费者可以凭三包凭证选择修理者免费修理（包括免除工时费和材料费）。
+      kind: direct
+      source: https://www.gov.cn/gongbao/content/2021/content_5639836.htmgongbao/content/2021/content_5639836.htm
+    params:
+        check:
+          kind: productOf
+          resultField: claimAmount
+          factorFields: ["quantity","unitPrice"]
+          tolerance: 0.01
+    note: >-
+      ✅ **本条 excerpt 已于 2026-10-07 换为逐字引文**（见 rules/evidence/clause-verification-warranty-regulation.md）。
+      ✅ kind 已升为 direct（2026-10-07）：第十九条逐字规定包修期内选修理者「**免费修理（包括免除工时费和材料费）**」——索赔金额的算术正是这一免费范围的核对。
+      索赔金额 = 数量 × 单价是**定义式**，属纯算术核对；本次未取得明文条号，故封顶 warn。
+      ⚠️ 本式**只覆盖配件金额**：实务中的索赔金额往往还含工时费与材料费，
+      并按免赔额扣减（本台账另有 laborHours、laborRate、deductible 三栏）。
+      若本机构按"配件 + 工时 − 免赔额"结算，本条会报差异 ——
+      此时请把 resultField 改为一个"配件金额"栏，或停用本条。
+      容差出厂 0.01。本条**不判断单价是否合理、该配件是否应当更换**。
+
+  - id: WC-006
+    title: 质保起算应不晚于索赔日期
+    severity: warn
+    basis:
+      document: 《家用汽车产品修理更换退货责任规定》
+      number: 市场监管总局令第43号（2021 年 7 月 22 日公布，自 2022 年 1 月 1 日起施行）
+      clause: 第十八条（起算点：自销售者开具购车发票之日起；不一致时自交付之日起）
+      excerpt: 家用汽车产品的三包有效期不得低于2年或者行驶里程50,000公里，以先到者为准；包修期不得低于3年或者行驶里程60,000公里，以先到者为准。三包有效期和包修期自销售者开具购车发票之日起计算；开具购车发票日期与交付家用汽车产品日期不一致的，自交付之日起计算。
+      kind: derived-from-principle
+      source: https://www.gov.cn/gongbao/content/2021/content_5639836.htmgongbao/content/2021/content_5639836.htm
+    params:
+        check:
+          kind: date
+          field: saleDate
+          notAfterField: claimDate
+          fix: 销售（起算）日期不应晚于索赔日期；核对两个日期的填写
+    note: >-
+      ✅ **本条 excerpt 已于 2026-10-07 换为逐字引文**（见 rules/evidence/clause-verification-warranty-regulation.md）。
+      ⚠️ kind 仍为 derived-from-principle：第十八条给出起算点，但未规定"质保起算不得晚于索赔日期"这一先后关系。
+      "先销售、后索赔"是质保流程的**时间前提**；日期可解析是台账能被程序处理的前提。
+      本次未取得明文条号，故封顶 warn。
+      ⚠️ 本条的起算日取自台账的销售日期栏。**法定起算点只有两个**（第十八条逐字）：
+      「**自销售者开具购车发票之日起计算**；开具购车发票日期与交付家用汽车产品日期
+      **不一致的，自交付之日起计算**」—— **本规定没有"上牌日"这一起算点**。
+      厂商政策可能**长于**法定下限（第四条鼓励如此），故实际质保起算以**厂商承诺**为准；
+      本插件不替使用方选定起算点，只核对台账里写的两个日期。
+      日期无法解析时会单独报出，**不会静默跳过**。
+
+  - id: WC-007
+    title: 索赔单号不应在台账内重复
+    severity: warn
+    basis:
+      document: 《家用汽车产品修理更换退货责任规定》
+      number: 市场监管总局令第43号（2021 年 7 月 22 日公布，自 2022 年 1 月 1 日起施行）
+      clause: 第十七条（修理记录存档制度）、第九条（三包凭证的内容）
+      excerpt: 修理者应当建立修理记录存档制度。修理记录保存期限不得低于6年。修理记录应当包括送修时间、行驶里程、消费者质量问题陈述、检查结果、修理项目、更换的零部件名称和编号、材料费、工时及工时费、车辆拖运费用、提供备用车或者交通费用补偿的情况、交车时间、修理者和消费者签名或者盖章等信息，并提供给消费者一份。
+      kind: derived-from-principle
+      source: https://www.gov.cn/gongbao/content/2021/content_5639836.htmgongbao/content/2021/content_5639836.htm
+    params:
+        check:
+          kind: unique
+          field: claimNo
+    note: >-
+      ✅ **本条 excerpt 已于 2026-10-07 换为逐字引文**（见 rules/evidence/clause-verification-warranty-regulation.md）。
+      ⚠️ kind 仍为 derived-from-principle：第十七条要求建立修理记录存档制度，未规定索赔单号不得重复。
+      索赔单号唯一是"每笔索赔只被登记一次"的**前提条件**：
+      重复会让索赔金额合计被重复计算，也会让厂商核销时无法对应。
+      本次未取得明文条号，故封顶 warn。比较时忽略空白字符。
+      注意：同一笔索赔分多行登记不同配件是正常的，此时应在配件名称栏区分。
+
+disabled: []
