@@ -45,8 +45,7 @@ caused by misuse or normal wear.
 ## Install
 
 ```sh
-pnpm pack
-dsh plugin --profile <name> add ./*.tgz
+dsh plugin --profile <name> add dsh-warranty-calc
 dsh --profile <name> --dump-config | grep 'dsh-warranty-calc'
 ```
 

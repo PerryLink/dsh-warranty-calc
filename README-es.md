@@ -45,8 +45,7 @@ La tabla de reglas, los campos y el comportamiento detallado están en [README.m
 ## Install
 
 ```sh
-pnpm pack
-dsh plugin --profile <name> add ./*.tgz
+dsh plugin --profile <name> add dsh-warranty-calc
 dsh --profile <name> --dump-config | grep 'dsh-warranty-calc'
 ```
 
