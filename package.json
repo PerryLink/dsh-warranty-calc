@@ -1,6 +1,6 @@
 {
   "name": "dsh-warranty-calc",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "质保期与索赔金额核对（按质保期月数与里程、索赔金额算式核对自洽，仅提示差异，不作出定性结论）",
   "type": "module",
   "main": "lib/index.mjs",
