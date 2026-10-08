@@ -1,8 +1,4 @@
 {
   "note": "Excerpt segments that are not yet traceable to this repository's rules/evidence/ record. The check:citations gate fails on anything new and on any entry that has become traceable, so this list can only shrink.",
-  "untraceable": [
-    "WC-001:6b8768521ea3",
-    "WC-005:5e802e274f83",
-    "WC-007:6b8768521ea3"
-  ]
+  "untraceable": []
 }
