@@ -1,4 +1,25 @@
-# dsh-warranty-calc
+# dsh-warranty-calc — Verificação da coerência entre o período de garantia e o valor da reclamação
+
+`dsh-warranty-calc` lê um registo de reclamações de garantia —o cabeçalho do concessionário mais uma linha por reclamação— e verifica a aritmética e a coerência de prazos desse mesmo registo: se cada reclamação anota o seu número de reclamação ou o nome da peça, se a data da reclamação cai dentro da data de fim de garantia que o registo declara, se a quilometragem na reclamação é analisável como número e não excede o limite de quilometragem que o registo declara, se o valor reclamado é igual a quantidade × preço unitário, se a data de venda não é posterior à data da reclamação e se não há números de reclamação repetidos.
+
+## O que ele responde
+
+| Você pergunta | O que ele responde |
+|---|---|
+| O registo não tem data de fim de garantia. A verificação da data da reclamação passa sem mais? | Não. `WC-002` aparece em `skipped` quando a coluna do fim de garantia está vazia: não presume nenhum prazo nem o calcula a partir da data de venda. Com a coluna preenchida verifica apenas que a data da reclamação fique entre a data de venda e a data de fim que você escreveu, e uma diferença significa que não concorda com o prazo do seu próprio registo, não que a reclamação esteja fora de garantia. |
+| O valor reclamado não é igual a quantidade × preço unitário — isso é detetado? | Sim. `WC-005` assinala a linha quando `claimAmount` se afasta de `quantity` × `unitPrice` mais do que a tolerância de 0.01. Cobre apenas o valor das peças: se o seu registo liquida como peças + mão de obra − franquia (`laborHours`, `laborRate` e `deductible` são colunas à parte), a regra reporta uma diferença; aponte `resultField` para uma coluna de valor de peças ou desative a regra. Não julga se o preço unitário é razoável nem se a peça devia ter sido substituída. |
+| A quilometragem está escrita como `48,600 公里` — ainda é lida? E se exceder o limite? | Sim. `WC-003` toma a parte numérica, pelo que `48600` e `48,600 公里` são analisados; só reporta a quilometragem que não consegue analisar e não julga se excede o limite. Dessa comparação trata `WC-004`, que apenas confronta com o limite `warrantyMiles` declarado pelo registo —nenhum valor está incorporado— e cujo achado significa «acima do limite que você registou», nunca «fora de garantia»: tempo e quilometragem são limites independentes, o que ocorrer primeiro. |
+| O mesmo número de reclamação aparece em duas linhas. | `WC-007` reporta um `claimNo` repetido, ignorando espaços, porque a repetição duplica o total reclamado e impede o fabricante de casar a linha. Registar a mesma reclamação em várias linhas por peças diferentes é normal: distinga-as na coluna do nome da peça. |
+| Uma linha não tem número de reclamação nem nome da peça. | `WC-001` assinala a linha apenas quando nem `claimNo` nem `partName` estão preenchidos: basta um dos dois. Verifica que esteja a informação mínima de rastreabilidade, não se a reclamação está dentro da garantia ou deve ser aceite. |
+| A data de venda é posterior à data da reclamação. | `WC-006` compara as duas datas do registo e assinala a linha quando `saleDate` é posterior a `claimDate`. A data de início é tomada da sua coluna de data de venda: a cláusula citada pela regra nomeia a data da fatura e a data da entrega como pontos de início, a regra não escolhe por você e o início real segue o compromisso do fabricante. Uma data que não consegue analisar é reportada à parte, não é omitida em silêncio. |
+
+## Normas que segue
+
+| Documento | Número | Regras que o citam |
+|---|---|---|
+| 《家用汽车产品修理更换退货责任规定》 | 市场监管总局令第43号（2021 年 7 月 22 日公布，自 2022 年 1 月 1 日起施行） | WC-001, WC-003, WC-005, WC-006, WC-007 |
+| 各厂商质保政策与三包规定（本机构配置） | 无统一标准（本条依据为台账写明的质保期） | WC-002 |
+| 各厂商质保政策（本机构配置） | 无统一标准（本条依据为台账写明的里程上限） | WC-004 |
 
 **Boundary:** this plugin checks a **质保索赔台账** for arithmetic and period self-consistency — that a claim
 records its number or part name, that the claim date falls inside the warranty end date the register states,

@@ -1,4 +1,25 @@
-# dsh-warranty-calc
+# dsh-warranty-calc — Warranty period and claim amount consistency check
+
+`dsh-warranty-calc` reads one warranty claim register — the dealer header plus one row per claim — and checks that register's own arithmetic and period self-consistency: that each claim records its claim number or part name, that the claim date falls inside the warranty end date the register states, that the mileage at claim parses as a number and does not exceed the mileage cap the register states, that the claim amount equals quantity × unit price, that the sale date does not follow the claim date, and that claim numbers do not repeat.
+
+## What it answers
+
+| You ask | What it answers |
+|---|---|
+| The register records no warranty end date. Does the claim-date check just pass? | No. `WC-002` reports itself in `skipped` when the warranty end column is empty: it assumes no period and never works one out from the sale date. With the column filled it only checks that the claim date lies between the sale date and the end date you wrote, and a finding means the date disagrees with the period in your own register, not that the claim is out of warranty. |
+| The claim amount does not equal quantity × unit price. Is that caught? | Yes. `WC-005` reports the row when `claimAmount` differs from `quantity` × `unitPrice` by more than the 0.01 tolerance. It covers the parts amount only: if your register settles as parts + labour − deductible (`laborHours`, `laborRate` and `deductible` are separate columns), the rule will report a difference — repoint `resultField` at a parts-only column or disable it. It does not judge whether the unit price is reasonable or whether the part should have been replaced. |
+| The mileage column reads `48,600 公里`. Is it still read, and what if it is above the cap? | Yes. `WC-003` takes the numeric part, so `48600` and `48,600 公里` both parse; only mileage it cannot parse is reported, and it does not judge whether the mileage is over the limit. `WC-004` does that comparison, against the `warrantyMiles` cap your register states — no figure is built in — and its finding means “above the cap you recorded”, never “out of warranty” — time and mileage are independent limits, whichever comes first. |
+| The same claim number appears on two rows. | `WC-007` reports a repeated `claimNo`, ignoring whitespace, because a repeat double-counts the claim total and stops the manufacturer matching the line. Registering one claim on several lines for different parts is normal: distinguish them in the part name column. |
+| A row has neither a claim number nor a part name. | `WC-001` reports the row only when neither `claimNo` nor `partName` is filled: one of the two is enough. It checks that the minimum tracing information is present, not whether the claim falls inside warranty or should be accepted. |
+| The sale date is later than the claim date. | `WC-006` compares the two dates in the register and reports the row when `saleDate` follows `claimDate`. The start date is taken from your sale date column: the rule's clause names the invoice date and the delivery date as starting points and this rule does not pick one for you, and the actual start follows the manufacturer's commitment. A date it cannot parse is reported separately, not silently skipped. |
+
+## Standards it follows
+
+| Document | Number | Cited by rules |
+|---|---|---|
+| 《家用汽车产品修理更换退货责任规定》 | 市场监管总局令第43号（2021 年 7 月 22 日公布，自 2022 年 1 月 1 日起施行） | WC-001, WC-003, WC-005, WC-006, WC-007 |
+| 各厂商质保政策与三包规定（本机构配置） | 无统一标准（本条依据为台账写明的质保期） | WC-002 |
+| 各厂商质保政策（本机构配置） | 无统一标准（本条依据为台账写明的里程上限） | WC-004 |
 
 **Boundary:** this plugin checks a **质保索赔台账** for arithmetic and period self-consistency — that a claim
 records its number or part name, that the claim date falls inside the warranty end date the register states,

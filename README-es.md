@@ -1,4 +1,25 @@
-# dsh-warranty-calc
+# dsh-warranty-calc — Verificación de la coherencia entre el período de garantía y el importe de la reclamación
+
+`dsh-warranty-calc` lee un registro de reclamaciones de garantía —la cabecera del concesionario más una fila por reclamación— y comprueba la aritmética y la coherencia de plazos de ese mismo registro: que cada reclamación anote su número de reclamación o el nombre de la pieza, que la fecha de la reclamación caiga dentro de la fecha de fin de garantía que el registro declara, que el kilometraje en la reclamación se pueda analizar como número y no supere el límite de kilometraje que el registro declara, que el importe reclamado sea igual a cantidad × precio unitario, que la fecha de venta no sea posterior a la fecha de la reclamación y que no se repitan los números de reclamación.
+
+## Qué responde
+
+| Usted pregunta | Qué responde |
+|---|---|
+| El registro no tiene fecha de fin de garantía. ¿La comprobación de la fecha de la reclamación pasa sin más? | No. `WC-002` aparece en `skipped` cuando la columna del fin de garantía está vacía: no supone ningún plazo ni lo calcula a partir de la fecha de venta. Con la columna rellena solo comprueba que la fecha de la reclamación quede entre la fecha de venta y la fecha de fin que usted escribió, y una diferencia significa que no concuerda con el plazo de su propio registro, no que la reclamación esté fuera de garantía. |
+| El importe reclamado no es igual a cantidad × precio unitario, ¿se detecta? | Sí. `WC-005` señala la fila cuando `claimAmount` se aparta de `quantity` × `unitPrice` más de la tolerancia de 0.01. Cubre solo el importe de las piezas: si su registro liquida como piezas + mano de obra − franquicia (`laborHours`, `laborRate` y `deductible` son columnas aparte), la regla informará de una diferencia; apunte `resultField` a una columna de importe de piezas o desactive la regla. No juzga si el precio unitario es razonable ni si la pieza debía sustituirse. |
+| El kilometraje figura como `48,600 公里`, ¿se lee igual? ¿Y si supera el límite? | Sí. `WC-003` toma la parte numérica, así que `48600` y `48,600 公里` se analizan; solo informa del kilometraje que no puede analizar y no juzga si supera el límite. De esa comparación se ocupa `WC-004`, que solo contrasta con el límite `warrantyMiles` que declara el registro —ninguna cifra está incorporada— y cuyo hallazgo significa «por encima del límite que usted registró», nunca «fuera de garantía»: tiempo y kilometraje son límites independientes, el que se cumpla primero. |
+| El mismo número de reclamación aparece en dos filas. | `WC-007` informa de un `claimNo` repetido, ignorando los espacios, porque la repetición duplica el total reclamado e impide que el fabricante case la línea. Registrar una misma reclamación en varias filas por piezas distintas es normal: distíngalas en la columna del nombre de la pieza. |
+| Una fila no tiene número de reclamación ni nombre de pieza. | `WC-001` señala la fila solo cuando no está relleno ni `claimNo` ni `partName`: basta con uno de los dos. Comprueba que esté la información mínima de trazabilidad, no si la reclamación está dentro de garantía o debe aceptarse. |
+| La fecha de venta es posterior a la fecha de la reclamación. | `WC-006` compara las dos fechas del registro y señala la fila cuando `saleDate` es posterior a `claimDate`. La fecha de inicio se toma de su columna de fecha de venta: la cláusula que cita la regla nombra la fecha de factura y la fecha de entrega como puntos de inicio, la regla no elige por usted y el inicio real sigue el compromiso del fabricante. Una fecha que no puede analizar se informa aparte, no se omite en silencio. |
+
+## Normas que sigue
+
+| Documento | Número | Reglas que lo citan |
+|---|---|---|
+| 《家用汽车产品修理更换退货责任规定》 | 市场监管总局令第43号（2021 年 7 月 22 日公布，自 2022 年 1 月 1 日起施行） | WC-001, WC-003, WC-005, WC-006, WC-007 |
+| 各厂商质保政策与三包规定（本机构配置） | 无统一标准（本条依据为台账写明的质保期） | WC-002 |
+| 各厂商质保政策（本机构配置） | 无统一标准（本条依据为台账写明的里程上限） | WC-004 |
 
 **Boundary:** this plugin checks a **质保索赔台账** for arithmetic and period self-consistency — that a claim
 records its number or part name, that the claim date falls inside the warranty end date the register states,
