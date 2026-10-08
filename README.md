@@ -66,14 +66,13 @@ applies a versioned rule pack, and returns a report.
 
 | Rule | Check | Severity | Basis kind |
 |---|---|---|---|
-| `WC-001` | the claim records its number or part name | warn | principle |
+| `WC-001` | the claim records its number or part name | warn | direct |
 | `WC-002` | the claim date falls inside the recorded warranty end | info | local |
 | `WC-003` | mileage at claim parses as a number | warn | principle |
 | `WC-004` | mileage at claim does not exceed the recorded cap | info | local |
-| `WC-005` | the claim amount equals quantity × unit price | warn | principle |
+| `WC-005` | the claim amount equals quantity × unit price | warn | direct |
 | `WC-006` | the sale date does not follow the claim date | warn | principle |
 | `WC-007` | claim numbers do not repeat | warn | principle |
-
 ## Install
 
 ```sh
