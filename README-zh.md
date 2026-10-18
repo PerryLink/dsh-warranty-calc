@@ -40,12 +40,7 @@ dsh --profile <name> --dump-config | grep 'dsh-warranty-calc'
 | 各厂商质保政策与三包规定（本机构配置） | 无统一标准（本条依据为台账写明的质保期） | WC-002 |
 | 各厂商质保政策（本机构配置） | 无统一标准（本条依据为台账写明的里程上限） | WC-004 |
 
-**Boundary:** this plugin checks a **质保索赔台账** for arithmetic and period self-consistency — that a claim
-records its number or part name, that the claim date falls inside the warranty end date the register states,
-that mileage parses and does not exceed the mileage cap the register states, that the claim amount equals
-quantity × unit price, that the sale date does not follow the claim date, and that claim numbers do not repeat.
-It does **not** decide whether a claim should be accepted, whether a failure is covered, or whether it was
-caused by misuse or normal wear.
+**边界（中文译文，以英文原文为准）：** 本插件核对一份 **质保索赔台账** 的算术与期限自洽——每笔索赔是否记录其索赔单号或配件名称，索赔日期是否落在台账写明的质保期截止日之内，里程是否可解析且不超过台账写明的里程上限，索赔金额是否等于数量 × 单价，销售日期是否不晚于索赔日期，以及索赔单号是否不重复。它**不**判定索赔是否应当受理、故障是否属于质保范围，或是否由不当使用或正常磨损造成。
 
 > ### ⚠️ Warranty policy is the manufacturer's, and this pack does not pretend to quote one
 >
