@@ -42,27 +42,17 @@ dsh --profile <name> --dump-config | grep 'dsh-warranty-calc'
 
 **边界（中文译文，以英文原文为准）：** 本插件核对一份 **质保索赔台账** 的算术与期限自洽——每笔索赔是否记录其索赔单号或配件名称，索赔日期是否落在台账写明的质保期截止日之内，里程是否可解析且不超过台账写明的里程上限，索赔金额是否等于数量 × 单价，销售日期是否不晚于索赔日期，以及索赔单号是否不重复。它**不**判定索赔是否应当受理、故障是否属于质保范围，或是否由不当使用或正常磨损造成。
 
-> ### ⚠️ Warranty policy is the manufacturer's, and this pack does not pretend to quote one
+> ### ⚠️ 质保政策由厂商制定，本规则库不假装引用其中任何一条（以英文原文为准）
 >
-> Period length, mileage cap, labour rates and deductibles are set by **each manufacturer's warranty policy**
-> and by the three-guarantee rules for the relevant product category. **No unified standard exists**, so every
-> rule's `basis` says exactly that and stays at `warn` or `info`.
+> 质保期长度、里程上限、工时费率与免赔额，由**各厂商的质保政策**以及相应产品类别的三包规定确定。**不存在统一标准**，因此每条规则的 `basis` 都如实写明这一点，并停留在 `warn` 或 `info`。
 >
-> Three consequences are worth knowing before trusting a finding:
+> 在相信任何一条发现之前，有三项后果值得了解：
 >
-> - **The plugin never derives a warranty end date.** It does not compute "sale date + 36 months", because
->   months vary in length and the period may start at delivery or at registration rather than at sale — a
->   computed date would look precise while possibly being wrong. **You work the date out under the applicable
->   policy and record it in the 质保期截止日 column**, and `WC-002` compares against that.
-> - **`WC-004`'s mileage cap comes from the register too.** No figure is built in, and a finding means "above
->   the cap you recorded", never "out of warranty" — time and mileage are **independent limits, whichever comes
->   first**, and policies differ on what happens past either.
-> - **`WC-005` covers parts only.** Real claim amounts often add labour and material and subtract a deductible,
->   and this register has separate columns for those. A register settling as "parts + labour − deductible" will
->   report a difference; repoint `resultField` at a parts-amount column, or disable the rule.
+> - **本插件从不推算质保截止日期。** 它不计算「销售日期 + 36 个月」，因为每个月的天数不同，而且质保期可能从交车或注册登记起算，而不是从销售起算——算出来的日期看起来精确，却可能是错的。**你应当依据适用的政策自己算出日期，并填入「质保期截止日」栏**，`WC-002` 拿它来比对。
+> - **`WC-004` 的里程上限同样来自台账。** 不内置任何数字，一条发现意味着「超过你记录的上限」，从不意味着「已出保」——时间与里程是**两项独立的限制，以先到者为准**，而超过其中任一项之后如何处理，各厂商政策并不相同。
+> - **`WC-005` 只覆盖配件。** 真实的索赔金额往往会加上工时与材料、再减去免赔额，而本台账为这些项目设有单独的栏。按「配件 + 工时 − 免赔额」结算的台账会报出差异；请把 `resultField` 改为指向配件金额栏，或停用该条规则。
 >
-> **Every `excerpt` in the rule pack says, in so many words, that the clause text was not obtained.** When the
-> texts are in hand, replace each `excerpt` with the real clause and raise `kind` to `direct`.
+> **规则库中的每一个 `excerpt` 都明文写着：条款原文本次未取得。** 待取得原文后，请把每个 `excerpt` 换成真实条款，并把 `kind` 提到 `direct`。
 
 ## Compatibility
 
