@@ -4,9 +4,18 @@
 
 `dsh-warranty-calc` reads one warranty claim register — the dealer header plus one row per claim — and checks that register's own arithmetic and period self-consistency: that each claim records its claim number or part name, that the claim date falls inside the warranty end date the register states, that the mileage at claim parses as a number and does not exceed the mileage cap the register states, that the claim amount equals quantity × unit price, that the sale date does not follow the claim date, and that claim numbers do not repeat.
 
+## Install
+
+```sh
+dsh plugin --profile <name> add dsh-warranty-calc
+dsh --profile <name> --dump-config | grep 'dsh-warranty-calc'
+```
+
 ## What it looks like
 
-![Terminal demo of dsh-warranty-calc: real output over its WC-003 fixture](https://raw.githubusercontent.com/PerryLink/dsh-warranty-calc/main/docs/assets/dsh-warranty-calc-demo.png)
+![Terminal demo of dsh-warranty-calc: real output over its WC-003 fixture](https://raw.githubusercontent.com/PerryLink/dsh-warranty-calc/main/docs/assets/dsh-warranty-calc-hero.png)
+
+![Animated terminal demo of dsh-warranty-calc](https://raw.githubusercontent.com/PerryLink/dsh-warranty-calc/main/docs/assets/dsh-warranty-calc-demo.gif)
 
 Real output from this plugin over its own `WC-003` test fixture — not a mock-up. The rule pack ships no invented quotations, so a finding names both the clause it applied and the fact that the clause text was not obtained.
 
@@ -62,10 +71,10 @@ caused by misuse or normal wear.
 
 | Surface | Status |
 |---|---|
-| Harness | Peer range `>=0.1.2-rc.1 <0.2.0 \|\| >=0.2.0-0 <0.3.0` — verified to accept both `0.2.0-rc.2` and `0.2.1-alpha.1`. `engines.dsh` is deliberately not declared: it has no reader and cannot reject a host |
+| Harness | Peer range `>=0.1.2-rc.1 <0.2.0 \|\| >=0.2.0-0 <0.3.0` — verified to accept both `0.2.0-rc.2` and `0.2.1-rc.2`. `engines.dsh` is declared as `>=0.2.1-0 <0.3.0` and is enforced by the host since 0.2.1 |
 | Node | `^22.19.0 || >=24.0.0` |
 | Platforms | All (plain ESM; no native code, no network, no model call) |
-| Tool mode | Works in `native`, `ptc` and `both`; for a batch of claims use `ptc` |
+| Tool mode | Works in `native` and `ptc`; for a batch of claims use `ptc` |
 
 ## What it does
 
@@ -81,13 +90,6 @@ applies a versioned rule pack, and returns a report.
 | `WC-005` | the claim amount equals quantity × unit price | warn | direct |
 | `WC-006` | the sale date does not follow the claim date | warn | principle |
 | `WC-007` | claim numbers do not repeat | warn | principle |
-## Install
-
-```sh
-dsh plugin --profile <name> add dsh-warranty-calc
-dsh --profile <name> --dump-config | grep 'dsh-warranty-calc'
-```
-
 ## Configuration
 
 | Key | Type | Default | Description |

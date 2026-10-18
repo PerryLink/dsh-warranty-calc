@@ -1,0 +1,14 @@
+[
+  {
+    "path": "docs/assets/dsh-warranty-calc-hero.png",
+    "kind": "hero",
+    "alt": "dsh-warranty-calc terminal output",
+    "caption": "Real dsh-warranty-calc checker output; 31 tests passed."
+  },
+  {
+    "path": "docs/assets/dsh-warranty-calc-demo.gif",
+    "kind": "demo",
+    "alt": "Animated dsh-warranty-calc terminal session",
+    "caption": "The same run, assembled line by line."
+  }
+]

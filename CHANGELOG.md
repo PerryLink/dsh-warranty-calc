@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.2.9] - 2026-10-18
+
+### Changed
+
+- Move the Install section to the first screen in all five READMEs.
+
+## [0.2.8] - 2026-10-18
+
+### Changed
+
+- Add a 1280×720 hero and a 960×540, 4-second terminal GIF rendered from the checker’s own output; `screenshots.json` is an object array and `capture.json` records the storyboard.
+
+## 0.2.7 - 2026-10-18
+
+- Fix: a rule that executed and found no difference is no longer placed in `skipped`. The report view labels only genuinely unexecuted rules as “未执行的检查”; `skippedCount` no longer counts executed-clean rules.
+
+
+## 0.2.6 - 2026-10-17
+
+- Compatibility: declare `engines.dsh` `>=0.2.1-0 <0.3.0`; move `@deepseek-ai/dsh-*` devDependencies to `0.2.1-rc.2`; add `@deepseek-ai/dsh-working-directory`.
+- Docs: the compatibility table no longer claims `engines.dsh` is undeclared; drop the retired `both` tool mode.
+
+
 ## 0.2.5
 
 - Add a demo card to the README: one terminal shot of this plugin's real output
@@ -65,3 +88,5 @@
 - Five-language READMEs hold the same section count and the same configuration keys.
 - Rule pack: 7 rules across WC-001..WC-007.
 - Licensed Apache-2.0.
+
+

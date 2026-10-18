@@ -4,9 +4,18 @@
 
 `dsh-warranty-calc` वारंटी दावों का एक रजिस्टर पढ़ता है — डीलर हेडर और प्रत्येक दावे की एक पंक्ति — और उसी रजिस्टर के अंकगणित तथा अवधि की आंतरिक संगति की जाँच करता है: क्या प्रत्येक दावे में दावा क्रमांक या पुर्ज़े का नाम दर्ज है, क्या दावे की तारीख रजिस्टर में लिखी वारंटी समाप्ति तिथि के भीतर पड़ती है, क्या दावे के समय की माइलेज संख्या के रूप में पढ़ी जा सकती है और रजिस्टर में लिखी माइलेज सीमा से अधिक नहीं है, क्या दावा राशि मात्रा × इकाई मूल्य के बराबर है, क्या बिक्री तिथि दावे की तारीख के बाद नहीं है, और क्या दावा क्रमांक दोहराए नहीं गए हैं।
 
+## Install
+
+```sh
+dsh plugin --profile <name> add dsh-warranty-calc
+dsh --profile <name> --dump-config | grep 'dsh-warranty-calc'
+```
+
 ## आउटपुट कैसा दिखता है
 
-![Terminal demo of dsh-warranty-calc: real output over its WC-003 fixture](https://raw.githubusercontent.com/PerryLink/dsh-warranty-calc/main/docs/assets/dsh-warranty-calc-demo.png)
+![Terminal demo of dsh-warranty-calc: real output over its WC-003 fixture](https://raw.githubusercontent.com/PerryLink/dsh-warranty-calc/main/docs/assets/dsh-warranty-calc-hero.png)
+
+![Animated terminal demo of dsh-warranty-calc](https://raw.githubusercontent.com/PerryLink/dsh-warranty-calc/main/docs/assets/dsh-warranty-calc-demo.gif)
 
 इस प्लगइन का अपने ही `WC-003` टेस्ट फ़िक्स्चर पर वास्तविक आउटपुट — कोई नकली चित्र नहीं। नियम-पैक उद्धरण नहीं गढ़ता, इसलिए हर निष्कर्ष लागू किए गए खंड का नाम और यह भी बताता है कि उसका मूल पाठ इस बार प्राप्त नहीं हुआ।
 
@@ -62,21 +71,14 @@ caused by misuse or normal wear.
 
 | सतह | स्थिति |
 |---|---|
-| Harness | peer रेंज `>=0.1.2-rc.1 <0.2.0 \|\| >=0.2.0-0 <0.3.0` — `0.2.0-rc.2` और `0.2.1-alpha.1` दोनों को स्वीकार करने के लिए सत्यापित। **`engines.dsh` जानबूझकर घोषित नहीं**: इसका कोई पाठक नहीं और यह किसी होस्ट को अस्वीकार नहीं कर सकता |
+| Harness | peer रेंज `>=0.1.2-rc.1 <0.2.0 \|\| >=0.2.0-0 <0.3.0` — `0.2.0-rc.2` और `0.2.1-rc.2` दोनों को स्वीकार करने के लिए सत्यापित। **`engines.dsh` `>=0.2.1-0 <0.3.0` के रूप में घोषित है** और 0.2.1 से होस्ट इसे लागू करता है |
 | Node | `^22.19.0 || >=24.0.0` |
 | प्लेटफ़ॉर्म | सभी (शुद्ध ESM; कोई नेटिव कोड नहीं, कोई नेटवर्क नहीं, कोई मॉडल कॉल नहीं) |
-| टूल मोड | `native`, `ptc` और `both` में काम करता है; पूरे फ़ोल्डर के लिए `ptc` चुनें |
+| टूल मोड | `native` और `ptc` में काम करता है; पूरे फ़ोल्डर के लिए `ptc` चुनें |
 
 ## What it does
 
 नियम-सूची, फ़ील्ड और विस्तृत व्यवहार [README.md](README.md#what-it-does) (अंग्रेज़ी मुख्य संस्करण) में हैं। यह प्लगइन केवल उद्धृत धाराओं के सामने शाब्दिक अंतर सूचीबद्ध करता है और हर न चल पाई जाँच को `skipped` में बताता है।
-
-## Install
-
-```sh
-dsh plugin --profile <name> add dsh-warranty-calc
-dsh --profile <name> --dump-config | grep 'dsh-warranty-calc'
-```
 
 ## Configuration
 
