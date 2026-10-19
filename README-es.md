@@ -3,6 +3,7 @@
 [English](README.md) · [简体中文](README-zh.md) · [Español](README-es.md) · [Português](README-pt.md) · [हिन्दी](README-hi.md)
 
 [![DSH Market](https://raw.githubusercontent.com/2BingLing/dsh-market/master/assets/readme/badge-listed-en.svg)](https://dsh.market/)
+[![dshfind](https://dshfind.com/api/badge/PerryLink/dsh-warranty-calc?metric=downloads)](https://dshfind.com/en/plugins/PerryLink/dsh-warranty-calc?ref=badge)
 
 `dsh-warranty-calc` lee un registro de reclamaciones de garantía —la cabecera del concesionario más una fila por reclamación— y comprueba la aritmética y la coherencia de plazos de ese mismo registro: que cada reclamación anote su número de reclamación o el nombre de la pieza, que la fecha de la reclamación caiga dentro de la fecha de fin de garantía que el registro declara, que el kilometraje en la reclamación se pueda analizar como número y no supere el límite de kilometraje que el registro declara, que el importe reclamado sea igual a cantidad × precio unitario, que la fecha de venta no sea posterior a la fecha de la reclamación y que no se repitan los números de reclamación.
 

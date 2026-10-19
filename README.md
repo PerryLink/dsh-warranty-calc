@@ -3,6 +3,7 @@
 [English](README.md) · [简体中文](README-zh.md) · [Español](README-es.md) · [Português](README-pt.md) · [हिन्दी](README-hi.md)
 
 [![DSH Market](https://raw.githubusercontent.com/2BingLing/dsh-market/master/assets/readme/badge-listed-en.svg)](https://dsh.market/)
+[![dshfind](https://dshfind.com/api/badge/PerryLink/dsh-warranty-calc?metric=downloads)](https://dshfind.com/en/plugins/PerryLink/dsh-warranty-calc?ref=badge)
 
 `dsh-warranty-calc` reads one warranty claim register — the dealer header plus one row per claim — and checks that register's own arithmetic and period self-consistency: that each claim records its claim number or part name, that the claim date falls inside the warranty end date the register states, that the mileage at claim parses as a number and does not exceed the mileage cap the register states, that the claim amount equals quantity × unit price, that the sale date does not follow the claim date, and that claim numbers do not repeat.
 
