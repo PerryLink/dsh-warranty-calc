@@ -15,13 +15,17 @@ dsh --profile <name> --dump-config | grep 'dsh-warranty-calc'
 
 ## What it looks like
 
-![Terminal demo of dsh-warranty-calc: real output over its WC-003 fixture](https://raw.githubusercontent.com/PerryLink/dsh-warranty-calc/main/docs/assets/dsh-warranty-calc-hero.png)
+![Workflow diagram for dsh-warranty-calc: call → plugin → result.](docs/assets/dsh-warranty-calc-flow.svg)
 
-![Animated terminal demo of dsh-warranty-calc](https://raw.githubusercontent.com/PerryLink/dsh-warranty-calc/main/docs/assets/dsh-warranty-calc-demo.gif)
+*Workflow overview: call → plugin → result. The examples below use the real command surface.*
 
-Real output from this plugin over its own `WC-003` test fixture — not a mock-up. The rule pack ships no invented quotations, so a finding names both the clause it applied and the fact that the clause text was not obtained.
+
 
 ## What it answers
+
+### Examples
+
+The table below is the example set: the first row is the detailed walkthrough, the remaining rows are short cases.
 
 | You ask | What it answers |
 |---|---|

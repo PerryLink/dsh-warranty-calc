@@ -15,13 +15,18 @@ dsh --profile <name> --dump-config | grep 'dsh-warranty-calc'
 
 ## आउटपुट कैसा दिखता है
 
-![Terminal demo of dsh-warranty-calc: real output over its WC-003 fixture](https://raw.githubusercontent.com/PerryLink/dsh-warranty-calc/main/docs/assets/dsh-warranty-calc-hero.png)
+![dsh-warranty-calc कार्यप्रवाह आरेख: कॉल → प्लगइन → परिणाम।](docs/assets/dsh-warranty-calc-flow.svg)
 
-![Animated terminal demo of dsh-warranty-calc](https://raw.githubusercontent.com/PerryLink/dsh-warranty-calc/main/docs/assets/dsh-warranty-calc-demo.gif)
+*कार्यप्रवाह: कॉल → प्लगइन → परिणाम। नीचे के उदाहरण वास्तविक कमांड सतह का उपयोग करते हैं।*
+
 
 इस प्लगइन का अपने ही `WC-003` टेस्ट फ़िक्स्चर पर वास्तविक आउटपुट — कोई नकली चित्र नहीं। नियम-पैक उद्धरण नहीं गढ़ता, इसलिए हर निष्कर्ष लागू किए गए खंड का नाम और यह भी बताता है कि उसका मूल पाठ इस बार प्राप्त नहीं हुआ।
 
 ## यह किन सवालों का जवाब देता है
+
+### उदाहरण
+
+नीचे दी गई तालिका उदाहरण-समुच्चय है: पहली पंक्ति विस्तृत केस है, बाकी संक्षिप्त केस हैं।
 
 | आपका सवाल | इसका जवाब |
 |---|---|
