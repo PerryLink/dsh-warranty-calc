@@ -29,6 +29,35 @@ Saída real deste plugin sobre o seu próprio fixture de teste `WC-003` — não
 
 A tabela abaixo é o conjunto de exemplos: a primeira linha é o caso detalhado e as demais são casos curtos.
 
+#### Saída detalhada
+
+**Ferramenta** `warranty_calc`
+
+**Entrada**
+
+~~~json
+{"rows":[{"数量":"2","单价":"180","索赔金额":"400"}]}
+~~~
+ 
+**Saída**
+
+~~~json
+{
+  "id": "dsh-warranty-calc.WC-005.de09b5a6",
+  "ruleId": "WC-005",
+  "severity": "warn",
+  "locator": {
+    "row": 1,
+    "field": "claimAmount"
+  },
+  "found": "第 1 行「claimAmount」填报 400，而 2 × 180 = 360",
+  "expected": "「claimAmount」应等于 quantity × unitPrice",
+  "fix": "核对是否抄错或漏改；本条只做算术核对，不判断各因子是否正确"
+}
+~~~
+
+*Observado em `dsh-warranty-calc/tests/fixtures/WC-005/WC-005-unsafe.json`*
+
 | Você pergunta | O que ele responde |
 |---|---|
 | O registo não tem data de fim de garantia. A verificação da data da reclamação passa sem mais? | Não. `WC-002` aparece em `skipped` quando a coluna do fim de garantia está vazia: não presume nenhum prazo nem o calcula a partir da data de venda. Com a coluna preenchida verifica apenas que a data da reclamação fique entre a data de venda e a data de fim que você escreveu, e uma diferença significa que não concorda com o prazo do seu próprio registo, não que a reclamação esteja fora de garantia. |

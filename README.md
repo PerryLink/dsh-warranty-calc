@@ -28,6 +28,35 @@ dsh --profile <name> --dump-config | grep 'dsh-warranty-calc'
 
 The table below is the example set: the first row is the detailed walkthrough, the remaining rows are short cases.
 
+#### Detailed output
+
+**Tool** `warranty_calc`
+
+**Input**
+
+~~~json
+{"rows":[{"数量":"2","单价":"180","索赔金额":"400"}]}
+~~~
+ 
+**Output**
+
+~~~json
+{
+  "id": "dsh-warranty-calc.WC-005.de09b5a6",
+  "ruleId": "WC-005",
+  "severity": "warn",
+  "locator": {
+    "row": 1,
+    "field": "claimAmount"
+  },
+  "found": "第 1 行「claimAmount」填报 400，而 2 × 180 = 360",
+  "expected": "「claimAmount」应等于 quantity × unitPrice",
+  "fix": "核对是否抄错或漏改；本条只做算术核对，不判断各因子是否正确"
+}
+~~~
+
+*Observed from `dsh-warranty-calc/tests/fixtures/WC-005/WC-005-unsafe.json`*
+
 | You ask | What it answers |
 |---|---|
 | The register records no warranty end date. Does the claim-date check just pass? | No. `WC-002` reports itself in `skipped` when the warranty end column is empty: it assumes no period and never works one out from the sale date. With the column filled it only checks that the claim date lies between the sale date and the end date you wrote, and a finding means the date disagrees with the period in your own register, not that the claim is out of warranty. |

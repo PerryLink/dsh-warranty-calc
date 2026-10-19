@@ -29,6 +29,35 @@ dsh --profile <name> --dump-config | grep 'dsh-warranty-calc'
 
 下表是示例集：第一行是详细走查，其余行是简短案例。
 
+#### 详细输出
+
+**工具** `warranty_calc`
+
+**输入**
+
+~~~json
+{"rows":[{"数量":"2","单价":"180","索赔金额":"400"}]}
+~~~
+ 
+**输出**
+
+~~~json
+{
+  "id": "dsh-warranty-calc.WC-005.de09b5a6",
+  "ruleId": "WC-005",
+  "severity": "warn",
+  "locator": {
+    "row": 1,
+    "field": "claimAmount"
+  },
+  "found": "第 1 行「claimAmount」填报 400，而 2 × 180 = 360",
+  "expected": "「claimAmount」应等于 quantity × unitPrice",
+  "fix": "核对是否抄错或漏改；本条只做算术核对，不判断各因子是否正确"
+}
+~~~
+
+*来源 `dsh-warranty-calc/tests/fixtures/WC-005/WC-005-unsafe.json`*
+
 | 你会问 | 它怎么答 |
 |---|---|
 | 台账没有填质保期截止日，索赔日期的核对就直接通过了？ | 不会。质保期截止日栏为空时，`WC-002` 报告自己进入 `skipped`：它不假定任何期限，也不用销售日期推算一个。该栏填了以后，它只核对索赔日期是否落在你写的销售日期与截止日之间；报了差异只表示与你写在台账里的期限不一致，不表示索赔已超保。 |
