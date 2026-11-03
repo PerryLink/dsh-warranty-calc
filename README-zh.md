@@ -1,6 +1,6 @@
 # dsh-warranty-calc — 质保期与索赔金额核对
 
-## 快速试跑（1 分钟）
+### 快速试跑（1 分钟）
 
 ```bash
 node samples/quickstart/run.mjs --check
