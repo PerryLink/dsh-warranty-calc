@@ -29,9 +29,8 @@ jobs:
       - run: pnpm run typecheck
       - run: pnpm test
       - run: pnpm run build
-      # The family-standard gates. check:readmes also holds the four translated
-      # READMEs to the English one's section count, install command and
-      # configuration keys.
+      # The family-standard gates. check:readmes holds all five READMEs to the
+      # same section count, install command and configuration keys.
       - run: pnpm run verify:self-contained
       - run: pnpm run check:lockfile
       - run: pnpm run check:readmes
@@ -56,10 +55,10 @@ jobs:
             package/package.json \
             package/cordis.patch.yml \
             package/README.md \
-            package/README-zh.md \
-            package/README-es.md \
-            package/README-pt.md \
-            package/README-hi.md ; do
+            package/README.en.md \
+            package/README.es.md \
+            package/README.pt.md \
+            package/README.hi.md ; do
             grep -qx "$need" out/list.txt || { echo "missing: $need"; exit 1; }
           done
           grep -qE '^package/rules/.*\.yaml$' out/list.txt || { echo "missing: rules/*.yaml"; exit 1; }

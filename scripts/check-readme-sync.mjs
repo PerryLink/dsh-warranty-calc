@@ -1,14 +1,16 @@
 // Five-language README sync gate: every README must carry the same number of
-// `## ` sections as the English source, state the published install command,
-// and contain every configuration-table key. Section headings may be
-// translated; the English file is the source of truth.
+// `## ` sections as the Chinese source (README.md), state the published
+// install command, and contain every configuration-table key. Section headings
+// are translated per language; README.md is the source of truth.
 import { readFileSync, existsSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)))
-const FILES = ['README.md', 'README-zh.md', 'README-es.md', 'README-pt.md', 'README-hi.md']
+const FILES = ['README.md', 'README.en.md', 'README.es.md', 'README.pt.md', 'README.hi.md']
 const INSTALL_COMMAND = 'dsh plugin --profile <name> add dsh-warranty-calc'
+const CONFIG_HEADING = /^##\s+(?:配置|Configuration|Configuración|Configuração|कॉन्फ़िगरेशन)\s*$/u
+const TABLE_HEADERS = new Set(['Key', '键', 'Clave', 'Chave', 'कुंजी'])
 
 const failures = []
 const read = (file) => {
@@ -23,10 +25,10 @@ const read = (file) => {
 const sectionCount = (text) => (text.match(/^## /gmu) ?? []).length
 
 // Configuration-table keys: every backtick-quoted token in the first cell of
-// each row under the "## Configuration" section (until the next `## ` heading).
+// each row under the localized configuration section (until the next `## ` heading).
 const configKeysOf = (text) => {
   const lines = text.split(/\r?\n/u)
-  const start = lines.findIndex((line) => /^##\s+Configuration\s*$/u.test(line))
+  const start = lines.findIndex((line) => CONFIG_HEADING.test(line))
   if (start === -1) return []
   const end = lines.findIndex((line, index) => index > start && /^##\s+/u.test(line))
   const section = lines.slice(start, end === -1 ? undefined : end)
@@ -35,7 +37,7 @@ const configKeysOf = (text) => {
     if (!line.startsWith('|')) continue
     const cells = line.split('|').map((cell) => cell.trim())
     const key = cells[1]
-    if (key === undefined || key === '' || key === 'Key' || /^-+$/u.test(key)) continue
+    if (key === undefined || key === '' || TABLE_HEADERS.has(key) || /^-+$/u.test(key)) continue
     const tokens = [...key.matchAll(/`([^`]+)`/gu)].map((match) => match[1])
     if (tokens.length > 0) keys.push(...tokens)
     else keys.push(key)
