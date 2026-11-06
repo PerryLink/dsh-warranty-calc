@@ -1,8 +1,8 @@
 <div align="center">
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-warranty-calc-flow-dark.svg">
-  <img src="docs/assets/dsh-warranty-calc-flow-light.svg" width="100%" alt="dsh-warranty-calc जाँच प्रवाह: file या material → parseMaterial → rules/warranty-calc.yaml → runTableCheck → रिपोर्ट (markdown और reportJson)">
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-warranty-calc-hero-en-dark.webp">
+  <img src="docs/assets/dsh-warranty-calc-hero-en-light.webp" width="100%" alt="dsh-warranty-calc: बाईं ओर प्लगइन का नाम और मूल्य की दो पंक्तियाँ; दाईं ओर वारंटी दावों के रजिस्टर की एक नमूना पंक्ति — दावा क्रमांक और पुर्ज़े का नाम खाली, बिक्री, दावा और रजिस्टर में लिखी वारंटी समाप्ति तिथि एक समय-रेखा पर, 48,600 बनाम 100,000 की सीमा, और 2 × 180 = 360 बनाम दर्ज 400; नीचे issues[] में 2 अंतर और skipped[] में 1 जाँच अनर्गल, निर्णय समीक्षक के पास">
 </picture>
 
 # dsh-warranty-calc
@@ -39,6 +39,11 @@ dsh plugin --profile <name> add dsh-warranty-calc
 `dsh-warranty-calc` वारंटी दावों का एक रजिस्टर पढ़ता है — डीलर हेडर और प्रत्येक दावे की एक पंक्ति — और उसी रजिस्टर के अंकगणित तथा अवधि की आंतरिक संगति की जाँच करता है: क्या प्रत्येक दावे में दावा क्रमांक या पुर्ज़े का नाम दर्ज है, क्या दावे की तारीख रजिस्टर में लिखी वारंटी समाप्ति तिथि के भीतर पड़ती है, क्या दावे के समय की माइलेज संख्या के रूप में पढ़ी जा सकती है और रजिस्टर में लिखी माइलेज सीमा से अधिक नहीं है, क्या दावा राशि मात्रा × इकाई मूल्य के बराबर है, क्या बिक्री तिथि दावे की तारीख के बाद नहीं है, और क्या दावा क्रमांक दोहराए नहीं गए हैं।
 
 यह केवल वे अंतर लौटाता है जिन्हें सामग्री के भीतर इंगित किया जा सकता है, स्थान (पंक्ति, कॉलम), अपेक्षा और सुधार के साथ; यह निर्णय नहीं करता कि दावा स्वीकार होना चाहिए या खराबी वारंटी के दायरे में है, अनुपालन या दायित्व पर कोई निर्णय नहीं देता, और समीक्षक का विकल्प नहीं है। शुद्ध होस्ट-साइड, शून्य निर्भरता, कोई नेटवर्क नहीं, कोई मॉडल कॉल नहीं; मूल दस्तावेज़ केवल पढ़ा जाता है।
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-warranty-calc-flow-v5-dark.svg">
+  <img src="docs/assets/dsh-warranty-calc-flow-v5-light.svg" width="100%" alt="dsh-warranty-calc की संरचना: दावे की एक पंक्ति चार फ़ील्ड-समूहों — पहचान, समय, माइलेज और राशि — में खुलती है; सात नियम इनसे जुड़ते हैं (WC-001/WC-007 पहचान, WC-006/WC-002 तिथियाँ, WC-003/WC-004 माइलेज, WC-005 राशि) और दो निर्गमों issues[] और skipped[] में मिलते हैं; जो जाँच नहीं चल सकी वह कारण लिखती है, और खाली issues[] का अर्थ पास नहीं है">
+</picture>
 
 ## तीन चरणों में शुरुआत
 
@@ -335,7 +340,7 @@ node ../scripts/sync-shared.mjs dsh-warranty-calc
 
 प्लगइन **data-only** है: `src/model.ts` तालिका का आकार और फ़ील्ड उपनाम घोषित करता है, साझा किट पढ़ने वाला और जाँच इंजन देता है, और नियम-पैक हर जाँच घोषित करता है। अंतिम कमांड `../_shared` का साझा किट `src/shared/` में कॉपी करता है; हर साझा बदलाव के बाद इसे दोबारा चलाएँ। quickstart `samples/quickstart/` में है।
 
-README की छवियाँ [`scripts/gen-readme-assets.py`](scripts/gen-readme-assets.py) (Python + Pillow) से बनती हैं और दोबारा चलाई जा सकती हैं:
+README की छवियाँ [`scripts/gen-readme-assets.py`](scripts/gen-readme-assets.py) (hero बैनर के लिए Pillow, संरचना चित्र के लिए हाथ से लिखा SVG) से बनती हैं और दोबारा चलाई जा सकती हैं:
 
 ```sh
 python scripts/gen-readme-assets.py

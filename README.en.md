@@ -1,8 +1,8 @@
 <div align="center">
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-warranty-calc-flow-dark.svg">
-  <img src="docs/assets/dsh-warranty-calc-flow-light.svg" width="100%" alt="dsh-warranty-calc check pipeline: file or material → parseMaterial → rules/warranty-calc.yaml → runTableCheck → report (markdown and reportJson)">
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-warranty-calc-hero-en-dark.webp">
+  <img src="docs/assets/dsh-warranty-calc-hero-en-light.webp" width="100%" alt="dsh-warranty-calc: the plugin name and two value lines on the left; on the right a sample warranty-claim row — claim number and part name blank, sale, claim and the ledger's warranty end date on one timeline, 48,600 against a 100,000 mileage cap, and 2 × 180 = 360 against a declared 400; below, issues[] holds 2 differences and skipped[] 1 check that did not run, and the verdict stays with the reviewer">
 </picture>
 
 # dsh-warranty-calc
@@ -39,6 +39,11 @@ dsh plugin --profile <name> add dsh-warranty-calc
 `dsh-warranty-calc` reads one warranty claim register — the dealer header plus one row per claim — and checks that register's own arithmetic and period self-consistency: that each claim records its claim number or part name, that the claim date falls inside the warranty end date the register states, that the mileage at claim parses as a number and does not exceed the mileage cap the register states, that the claim amount equals quantity × unit price, that the sale date does not follow the claim date, and that claim numbers do not repeat.
 
 It returns only the differences it can point to inside the material, with a locator (row, column), the expectation, and the fix; it does not decide whether a claim should be accepted or whether a failure is covered, it issues no compliance or liability verdict, and it does not replace the reviewer. Pure host-side, zero dependencies, no network, no model call; the original is read-only.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-warranty-calc-flow-v5-dark.svg">
+  <img src="docs/assets/dsh-warranty-calc-flow-v5-light.svg" width="100%" alt="dsh-warranty-calc structure: one claim row fans out into four field groups — identity, time, mileage and amount; seven rules hang off them (WC-001/WC-007 identity, WC-006/WC-002 dates, WC-003/WC-004 mileage, WC-005 amount) and merge into two outputs, issues[] and skipped[]; a check that cannot run states its reason, and an empty issues[] is not a pass">
+</picture>
 
 ## Three-step setup
 
@@ -341,7 +346,7 @@ node ../scripts/sync-shared.mjs dsh-warranty-calc
 
 The plugin is **data-only**: `src/model.ts` declares the table shape and field aliases, the shared kit supplies the reader and the check engine, and the rule pack declares every check. The last command copies the shared kit from `../_shared` into `src/shared/`; re-run it after every shared change. The quickstart lives in `samples/quickstart/`.
 
-The README images are generated programmatically by [`scripts/gen-readme-assets.py`](scripts/gen-readme-assets.py) (Python + Pillow) and are safe to re-run:
+The README images are generated programmatically by [`scripts/gen-readme-assets.py`](scripts/gen-readme-assets.py) (Pillow for the hero banner, hand-written SVG for the structure diagram) and are safe to re-run:
 
 ```sh
 python scripts/gen-readme-assets.py

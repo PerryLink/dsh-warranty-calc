@@ -1,8 +1,8 @@
 <div align="center">
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-warranty-calc-flow-dark.svg">
-  <img src="docs/assets/dsh-warranty-calc-flow-light.svg" width="100%" alt="dsh-warranty-calc 核对流程：file 或 material → parseMaterial → rules/warranty-calc.yaml → runTableCheck → 报告（markdown 与 reportJson）">
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-warranty-calc-hero-zh-dark.webp">
+  <img src="docs/assets/dsh-warranty-calc-hero-zh-light.webp" width="100%" alt="dsh-warranty-calc 配图：左侧是插件名与两行价值句；右侧是一份质保索赔台账的示例行——索赔单号与配件名称为空，销售、索赔与台账写明的截止日排在同一条时间线上，48,600 对着 100,000 的里程上限，2 × 180 = 360 而单上填了 400；下方是 issues[] 2 条差异、skipped[] 1 条未执行，结论留给审核人">
 </picture>
 
 # dsh-warranty-calc
@@ -39,6 +39,11 @@ dsh plugin --profile <name> add dsh-warranty-calc
 `dsh-warranty-calc` 读取一份质保索赔台账——经销商表头加每笔索赔一行——核对这份台账自身的算术与期限自洽：每笔索赔是否记录了索赔单号或配件名称、索赔日期是否落在台账写明的质保期截止日之内、索赔时里程是否可解析为数值且不超过台账写明的质保里程、索赔金额是否等于数量乘单价、销售日期是否不晚于索赔日期、索赔单号是否重复。
 
 它只列出材料内部能逐条指认的差异，并给出定位（第几行、哪一栏）、期望与修法；不判断索赔是否应当受理、故障是否属于质保范围，也不判合规、不认定责任，更不替代审核人。纯主机端、零依赖、不联网、不调模型，原件只读不改。
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-warranty-calc-flow-v5-dark.svg">
+  <img src="docs/assets/dsh-warranty-calc-flow-v5-light.svg" width="100%" alt="dsh-warranty-calc 结构图：一行索赔按身份、时间、里程、金额四组字段展开，七条规则分挂四组（WC-001/WC-007 身份、WC-006/WC-002 日期、WC-003/WC-004 里程、WC-005 金额），再汇入 issues[] 与 skipped[] 两条出口；不能执行的检查写明原因，空 issues 不等于通过">
+</picture>
 
 ## 三步上手
 
@@ -335,7 +340,7 @@ node ../scripts/sync-shared.mjs dsh-warranty-calc
 
 插件是 **data-only** 的：`src/model.ts` 声明表结构与字段别名，共享套件提供读取器与检查引擎，规则库声明每一条检查。第 9 项把 `../_shared` 的共享件同步进 `src/shared/`；每次改动共享件后都要重跑。quickstart 见 `samples/quickstart/`。
 
-README 配图由 [`scripts/gen-readme-assets.py`](scripts/gen-readme-assets.py) 程序化生成（Python + Pillow），可重复执行：
+README 配图由 [`scripts/gen-readme-assets.py`](scripts/gen-readme-assets.py) 程序化生成（hero 横幅用 Pillow 画、结构图用手写 SVG 画），可重复执行：
 
 ```sh
 python scripts/gen-readme-assets.py

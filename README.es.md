@@ -1,8 +1,8 @@
 <div align="center">
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-warranty-calc-flow-dark.svg">
-  <img src="docs/assets/dsh-warranty-calc-flow-light.svg" width="100%" alt="Flujo de verificación de dsh-warranty-calc: file o material → parseMaterial → rules/warranty-calc.yaml → runTableCheck → informe (markdown y reportJson)">
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-warranty-calc-hero-en-dark.webp">
+  <img src="docs/assets/dsh-warranty-calc-hero-en-light.webp" width="100%" alt="dsh-warranty-calc: a la izquierda el nombre y dos frases de valor; a la derecha una fila de ejemplo del registro de reclamaciones —número de reclamación y pieza en blanco, venta, reclamación y fecha de fin declarada en una línea de tiempo, 48.600 frente al límite de 100.000 km y 2 × 180 = 360 frente a los 400 declarados—; abajo, issues[] con 2 diferencias y skipped[] con 1 comprobación no ejecutada, y el dictamen queda en el revisor">
 </picture>
 
 # dsh-warranty-calc
@@ -39,6 +39,11 @@ dsh plugin --profile <name> add dsh-warranty-calc
 `dsh-warranty-calc` lee un registro de reclamaciones de garantía —la cabecera del concesionario más una fila por reclamación— y comprueba la aritmética y la coherencia de plazos de ese mismo registro: que cada reclamación anote su número de reclamación o el nombre de la pieza, que la fecha de la reclamación caiga dentro de la fecha de fin de garantía que el registro declara, que el kilometraje en la reclamación se pueda analizar como número y no supere el límite de kilometraje que el registro declara, que el importe reclamado sea igual a cantidad × precio unitario, que la fecha de venta no sea posterior a la fecha de la reclamación y que no se repitan los números de reclamación.
 
 Solo devuelve las diferencias que puede señalar dentro del material, con su localización (fila, columna), lo esperado y la corrección; no decide si una reclamación debe aceptarse o si una avería está cubierta, no emite juicios de conformidad ni de responsabilidad, ni sustituye al revisor. Es local, sin dependencias, sin red y sin llamada al modelo; el original es de solo lectura.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/dsh-warranty-calc-flow-v5-dark.svg">
+  <img src="docs/assets/dsh-warranty-calc-flow-v5-light.svg" width="100%" alt="Estructura de dsh-warranty-calc: una fila de reclamación se abre en cuatro grupos de campos —identidad, tiempo, kilometraje e importe—; siete reglas cuelgan de ellos (WC-001/WC-007 identidad, WC-006/WC-002 fechas, WC-003/WC-004 kilometraje, WC-005 importe) y confluyen en dos salidas, issues[] y skipped[]; la comprobación que no puede ejecutarse indica su motivo, y un issues[] vacío no equivale a aprobado">
+</picture>
 
 ## Instalación en tres pasos
 
@@ -335,7 +340,7 @@ node ../scripts/sync-shared.mjs dsh-warranty-calc
 
 El plugin es **data-only**: `src/model.ts` declara la forma de la tabla y los alias de campo, el kit compartido aporta el lector y el motor de comprobación, y el paquete de reglas declara cada comprobación. El último comando copia el kit compartido de `../_shared` a `src/shared/`; vuelva a ejecutarlo tras cada cambio compartido. El quickstart está en `samples/quickstart/`.
 
-Las imágenes del README se generan con [`scripts/gen-readme-assets.py`](scripts/gen-readme-assets.py) (Python + Pillow) y se pueden volver a ejecutar:
+Las imágenes del README se generan con [`scripts/gen-readme-assets.py`](scripts/gen-readme-assets.py) (Pillow para el banner hero, SVG escrito a mano para el diagrama de estructura) y se pueden volver a ejecutar:
 
 ```sh
 python scripts/gen-readme-assets.py
