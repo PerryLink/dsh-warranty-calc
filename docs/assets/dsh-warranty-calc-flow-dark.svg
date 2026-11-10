@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420" role="img" aria-label="dsh-warranty-calc check pipeline">
+<title>dsh-warranty-calc check pipeline</title>
+<rect width="1200" height="420" rx="18" fill="#0d1117"/>
+<text x="60" y="58" fill="#f0f6fc" font-family="ui-sans-serif,system-ui,sans-serif" font-size="30" font-weight="700">dsh-warranty-calc</text>
+<text x="60" y="92" fill="#8b949e" font-family="ui-monospace,monospace" font-size="16">warranty_calc · table self-consistency · host-only</text>
+<line x1="60" y1="116" x2="1140" y2="116" stroke="#30363d"/>
+<rect x="60" y="148" width="205" height="112" rx="14" fill="#161b22" stroke="#30363d" stroke-width="2"/>
+<text x="162" y="186" fill="#f0f6fc" text-anchor="middle" font-family="ui-monospace,monospace" font-size="15" font-weight="700">file | material</text>
+<text x="162" y="214" fill="#8b949e" text-anchor="middle" font-family="ui-monospace,monospace" font-size="12">JSON · YAML</text>
+<path d="M269 204h16" stroke="#8b949e" stroke-width="3"/>
+<path d="M281 198l8 6-8 6" fill="none" stroke="#8b949e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="289" y="148" width="205" height="112" rx="14" fill="#161b22" stroke="#30363d" stroke-width="2"/>
+<text x="391" y="186" fill="#f0f6fc" text-anchor="middle" font-family="ui-monospace,monospace" font-size="15" font-weight="700">parseMaterial</text>
+<text x="391" y="214" fill="#8b949e" text-anchor="middle" font-family="ui-monospace,monospace" font-size="12">rows[] · aliases</text>
+<path d="M498 204h16" stroke="#8b949e" stroke-width="3"/>
+<path d="M510 198l8 6-8 6" fill="none" stroke="#8b949e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="518" y="148" width="205" height="112" rx="14" fill="#161b22" stroke="#4B67B4" stroke-width="2"/>
+<text x="620" y="186" fill="#f0f6fc" text-anchor="middle" font-family="ui-monospace,monospace" font-size="13" font-weight="700">rules/warranty-calc.yaml</text>
+<text x="620" y="214" fill="#8b949e" text-anchor="middle" font-family="ui-monospace,monospace" font-size="12">WC-001 … WC-007</text>
+<path d="M727 204h16" stroke="#8b949e" stroke-width="3"/>
+<path d="M739 198l8 6-8 6" fill="none" stroke="#8b949e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="747" y="148" width="205" height="112" rx="14" fill="#161b22" stroke="#4B67B4" stroke-width="2"/>
+<text x="849" y="186" fill="#f0f6fc" text-anchor="middle" font-family="ui-monospace,monospace" font-size="15" font-weight="700">runTableCheck</text>
+<text x="849" y="214" fill="#8b949e" text-anchor="middle" font-family="ui-monospace,monospace" font-size="12">warn · info</text>
+<path d="M956 204h16" stroke="#8b949e" stroke-width="3"/>
+<path d="M968 198l8 6-8 6" fill="none" stroke="#8b949e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="976" y="148" width="205" height="112" rx="14" fill="#161b22" stroke="#3fb950" stroke-width="2"/>
+<text x="1078" y="186" fill="#f0f6fc" text-anchor="middle" font-family="ui-monospace,monospace" font-size="15" font-weight="700">report</text>
+<text x="1078" y="214" fill="#8b949e" text-anchor="middle" font-family="ui-monospace,monospace" font-size="12">markdown · reportJson</text>
+<rect x="60" y="300" width="1080" height="56" rx="12" fill="#161b22" stroke="#4B67B4" stroke-width="2"/>
+<text x="600" y="334" fill="#f0f6fc" text-anchor="middle" font-family="ui-monospace,monospace" font-size="14">issueCount · skippedCount · locator{row, field} · found / expected / fix</text>
+<text x="60" y="396" fill="#8b949e" font-family="ui-monospace,monospace" font-size="13">skipped ≠ pass · no network · no model call · original register read-only</text>
+</svg>
