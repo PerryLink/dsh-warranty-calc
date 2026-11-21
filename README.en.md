@@ -105,6 +105,10 @@ Basis kinds: `direct` = the clause states the requirement directly; `principle` 
 
 ### Examples
 
+![dsh-warranty-calc: real terminal run](docs/assets/dsh-warranty-calc-demo.gif)
+
+*Animated replay of a real run recorded in this repository.*
+
 The detailed output below is the plugin's real output on the `WC-005` fixture — not a mock-up.
 
 **Tool** `warranty_calc`

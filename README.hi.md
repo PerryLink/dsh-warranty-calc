@@ -45,6 +45,11 @@ dsh plugin --profile <name> add dsh-warranty-calc
   <img src="docs/assets/dsh-warranty-calc-flow-v5-light.svg" width="100%" alt="dsh-warranty-calc की संरचना: दावे की एक पंक्ति चार फ़ील्ड-समूहों — पहचान, समय, माइलेज और राशि — में खुलती है; सात नियम इनसे जुड़ते हैं (WC-001/WC-007 पहचान, WC-006/WC-002 तिथियाँ, WC-003/WC-004 माइलेज, WC-005 राशि) और दो निर्गमों issues[] और skipped[] में मिलते हैं; जो जाँच नहीं चल सकी वह कारण लिखती है, और खाली issues[] का अर्थ पास नहीं है">
 </picture>
 
+![dsh-warranty-calc का असली टर्मिनल रन](docs/assets/dsh-warranty-calc-demo.gif)
+
+*इस रिपॉज़िटरी में दर्ज असली रन का एनिमेटेड रीप्ले।*
+
+
 ## तीन चरणों में शुरुआत
 
 1. **इंस्टॉल करें** (npm पर प्रकाशित):

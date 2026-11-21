@@ -45,6 +45,11 @@ Solo devuelve las diferencias que puede señalar dentro del material, con su loc
   <img src="docs/assets/dsh-warranty-calc-flow-v5-light.svg" width="100%" alt="Estructura de dsh-warranty-calc: una fila de reclamación se abre en cuatro grupos de campos —identidad, tiempo, kilometraje e importe—; siete reglas cuelgan de ellos (WC-001/WC-007 identidad, WC-006/WC-002 fechas, WC-003/WC-004 kilometraje, WC-005 importe) y confluyen en dos salidas, issues[] y skipped[]; la comprobación que no puede ejecutarse indica su motivo, y un issues[] vacío no equivale a aprobado">
 </picture>
 
+![dsh-warranty-calc: ejecución real de terminal](docs/assets/dsh-warranty-calc-demo.gif)
+
+*Repetición animada de una ejecución real registrada en este repositorio.*
+
+
 ## Instalación en tres pasos
 
 1. **Instalar** (publicado en npm):
