@@ -7,6 +7,8 @@
 
 # dsh-warranty-calc
 
+Current version `0.2.14`.
+
 **Point out, claim by claim, every arithmetic and period inconsistency in a warranty claim register — which row, which column, what differs.**
 
 A host-side checker for contract management and warranty settlement: no command line required, the original is never modified, no network request, no model call. Excel can be converted to JSON/YAML first — in chat too, where the platform supports it.

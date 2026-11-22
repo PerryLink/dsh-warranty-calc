@@ -1,6 +1,6 @@
 {
   "meta": {
     "title": "Warranty claim check",
-    "description": "质保期与索赔金额核对（按质保期月数与里程、索赔金额算式核对自洽，仅提示差异，不作出定性结论）"
+    "description": "Point out, claim by claim, every arithmetic and period inconsistency in a warranty claim register — which row, which column, what differs."
   }
 }
