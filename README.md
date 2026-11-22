@@ -11,6 +11,8 @@
 
 面向合同管理与质保结算的纯主机端核对插件：不用懂命令行，不改原件、不联网、不调模型；Excel 可先转成 JSON/YAML（对话里也能代转）再交给它。
 
+最近一次核验：DeepSeek Harness `dsh-v0.2.3-alpha.1`（2026-11-22）。
+
 [安装](#三步上手) · [配置](#配置) · [FAQ](#faq) · [简体中文](README.md) · [English](README.en.md) · [Español](README.es.md) · [Português](README.pt.md) · [हिन्दी](README.hi.md)
 
 [![License](https://img.shields.io/badge/license-Apache--2.0-3366CC?style=flat-square&labelColor=2B3245)](LICENSE)

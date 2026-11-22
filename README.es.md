@@ -11,6 +11,8 @@
 
 Un verificador local para la gestión de contratos y la liquidación de garantías: no hace falta saber usar la línea de comandos, el original nunca se modifica, no hay red ni llamada al modelo. Excel puede convertirse antes a JSON/YAML (también en el chat, si la plataforma lo permite).
 
+Última verificación: DeepSeek Harness `dsh-v0.2.3-alpha.1` (2026-11-22).
+
 [Instalación](#instalación-en-tres-pasos) · [Configuración](#configuración) · [FAQ](#faq) · [简体中文](README.md) · [English](README.en.md) · [Español](README.es.md) · [Português](README.pt.md) · [हिन्दी](README.hi.md)
 
 [![License](https://img.shields.io/badge/license-Apache--2.0-3366CC?style=flat-square&labelColor=2B3245)](LICENSE)
@@ -48,7 +50,6 @@ Solo devuelve las diferencias que puede señalar dentro del material, con su loc
 ![dsh-warranty-calc: ejecución real de terminal](docs/assets/dsh-warranty-calc-demo.gif)
 
 *Repetición animada de una ejecución real registrada en este repositorio.*
-
 
 ## Instalación en tres pasos
 
